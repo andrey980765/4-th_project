@@ -40,7 +40,10 @@ def write_xml_contacts(list_of_dicts):
     root = ET.Element('contacts')
     for d in list_of_dicts:
         c = ET.SubElement(root, 'contact')
-        for k in ['name', 'email', 'phone', 'notes']:
+        for k in ['name', 
+                  'email', 
+                  'phone', 
+                  'notes']:
             el = ET.SubElement(c, k)
             el.text = d.get(k, '')
     tree = ET.ElementTree(root)

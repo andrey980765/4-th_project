@@ -118,4 +118,4 @@ def ajax_update_contact(request, pk):
     c.phone = phone
     c.notes = notes
     c.save()
-    return JsonResponse({'ok': True, 'contact': {'id': c.pk, 'name': c.name, 'email': c.email, 'phone': c.phone, 'notes': c.notes}})
+    return JsonResponse({'ok': True, 'contact': {'id': c.pk,'name': c.name, 'email': c.email, 'phone': c.phone, 'notes': c.notes}})

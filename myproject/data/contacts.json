@@ -1,6 +1,8 @@
 [
-  {"name":"Иван Иванов",
-  "email":"ivan@example.com",
-  "phone":"123",
-  "notes":"Тестовая запись"}
+    {
+        "name": "Иван Иванов",
+        "email": "ivan@example.com",
+        "phone": "123",
+        "notes": "Тестовая запись"
+    }
 ]
