@@ -1,0 +1,69 @@
+<!-- contacts/templates/contacts/contact_list.html -->
+{% extends 'contacts/base.html' %}
+{% load static %}
+{% block title %}Список контактов{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+  <div>
+    <div class="btn-group" role="group">
+      <a class="btn btn-outline-primary {% if source == 'db' %}active{% endif %}" href="?source=db">База данных</a>
+      <a class="btn btn-outline-primary {% if source == 'json' %}active{% endif %}" href="?source=json">JSON файлы</a>
+      <a class="btn btn-outline-primary {% if source == 'xml' %}active{% endif %}" href="?source=xml">XML файлы</a>
+    </div>
+  </div>
+  {% if from_db %}
+  <div class="d-flex">
+    <input id="searchInput" class="form-control me-2" placeholder="Поиск (AJAX)">
+  </div>
+  {% endif %}
+</div>
+
+<div id="contactsContainer">
+  {% if from_db %}
+    <table class="table table-striped">
+      <thead><tr><th>Имя</th><th>Email</th><th>Телефон</th><th>Примечание</th><th>Действия</th></tr></thead>
+      <tbody id="contactsTableBody">
+        {% for c in contacts %}
+        <tr data-id="{{ c.id }}">
+          <td class="name">{{ c.name }}</td>
+          <td class="email">{{ c.email }}</td>
+          <td class="phone">{{ c.phone }}</td>
+          <td class="notes">{{ c.notes|truncatechars:80 }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-secondary btn-edit" data-id="{{ c.id }}">Редакт.</button>
+            <button class="btn btn-sm btn-outline-danger btn-delete" data-id="{{ c.id }}">Удалить</button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Записей нет</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <!-- Вывод из файла -->
+    <div class="list-group">
+      {% for c in contacts %}
+        <div class="list-group-item">
+          <strong>{{ c.name }}</strong> — {{ c.email }} — {{ c.phone }}<br>
+          <small>{{ c.notes }}</small>
+        </div>
+      {% empty %}
+        <div class="alert alert-info">Нет записей в файлах.</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<!-- modal placeholder -->
+<div id="editModalContainer"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const AJAX_SEARCH_URL = "{% url 'contacts:ajax_search' %}";
+  const AJAX_DELETE_URL_TEMPLATE = "{% url 'contacts:ajax_delete' 12345 %}".replace('12345','__ID__');
+  const AJAX_UPDATE_URL_TEMPLATE = "{% url 'contacts:ajax_update' 12345 %}".replace('12345','__ID__');
+  const CSRF_TOKEN = '{{ csrf_token }}';
+</script>
+<script src="{% static 'contacts/js/contacts.js' %}"></script>
+{% endblock %}

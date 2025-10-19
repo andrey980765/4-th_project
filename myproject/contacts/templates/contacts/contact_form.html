@@ -1,0 +1,17 @@
+<!-- contacts/templates/contacts/contact_form.html -->
+{% extends 'contacts/base.html' %}
+{% load static %}
+{% block title %}Добавить контакт{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Новая запись</h5>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-primary" type="submit">Сохранить</button>
+      <a href="{% url 'contacts:list' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

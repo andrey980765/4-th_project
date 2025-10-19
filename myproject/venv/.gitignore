@@ -1,0 +1,63 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+*# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Django ---
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+.env
+.env.local
+/secrets.json
+
+# --- Virtual environment ---
+venv/
+env/
+ENV/
+.venv/
+.idea/
+.vscode/
+*.sqlite3
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+
+# --- Migrations (опционально, если хочешь чистый репо без них) ---
+# contacts/migrations/
+# !contacts/migrations/__init__.py
+
+# --- Pytest / Coverage / Reports ---
+.coverage
+htmlcov/
+*.cover
+*.log
+*.dat
+*.csv
+*.out
+nosetests.xml
+coverage.xml
+
+# --- VSCode / JetBrains IDE configs ---
+.vscode/
+.idea/
+
+# --- Collected static files (Django collectstatic output) ---
+static/
+staticfiles/
+
+# --- Compiled / Cached files ---
+*.mo
+*.compiled
+*.pyo
+
+# --- PythonAnywhere ---
+.pythonanywhere-*
+
