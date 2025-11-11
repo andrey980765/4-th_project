@@ -379,6 +379,10 @@ def db_get_ajax(request, pk):
         'license': obj.license,
     })
 
+def db_view_ajax(request):
+    items = PhotoMetadata.objects.all().values()
+    return JsonResponse({"results": list(items)})
+
 
 @require_POST
 def db_update_ajax(request, pk):

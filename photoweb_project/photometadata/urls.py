@@ -21,6 +21,8 @@ urlpatterns = [
     path('ajax/get/<int:pk>/', views.db_get_ajax, name='db_get_ajax'),
     path('ajax/update/<int:pk>/', views.db_update_ajax, name='db_update_ajax'),
     path('ajax/delete/<int:pk>/', views.db_delete_ajax, name='db_delete_ajax'),
+    path("ajax/view/", views.db_view_ajax, name="db_view_ajax"),
+
 ]
 
 

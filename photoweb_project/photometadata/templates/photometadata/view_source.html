@@ -135,44 +135,72 @@ const csrftoken = '{{ csrf_token }}';
 
 // ======= ПОИСК =======
 document.getElementById('search-input').addEventListener('input', function() {
-  const q = this.value.trim();
-  fetch("{% url 'photometadata:db_search_ajax' %}", {
-    method: "POST",
-    headers: {"Content-Type": "application/json", "X-CSRFToken": csrftoken},
-    body: JSON.stringify({ q })
-  })
-  .then(r => r.json())
-  .then(data => {
-  const body = document.getElementById('data-body');
-  body.innerHTML = "";
-  for (const item of data.results) {
-    const row = `
-      <tr data-id="${item.id}">
-        <td>${item.title || ''}</td>
-        <td>${item.photographer || ''}</td>
-        <td>${item.date_taken || ''}</td>
-        <td>${item.description || ''}</td>
-        <td>${item.location || ''}</td>
-        <td>${item.camera || ''}</td>
-        <td>${item.license || ''}</td>
-        <td>${item.width || ''}</td>
-        <td>${item.height || ''}</td>
-        <td>${item.tags || ''}</td>
-        <td>
-          ${item.url ? `
-            <a href="${item.url}" target="_blank">
-              <img src="${item.url}" style="max-width:100px;border-radius:6px;">
-            </a>` : '—'}
-        </td>
-        <td>
-          <button class="btn btn-sm btn-warning edit-btn" data-id="${item.id}">Редактировать</button>
-          <button class="btn btn-sm btn-danger delete-btn" data-id="${item.id}">Удалить</button>
-        </td>
-      </tr>`;
-    body.insertAdjacentHTML('beforeend', row);
-  }
-});
+    const q = this.value.trim();
+    const url = "{% url 'photometadata:db_search_ajax' %}";
+    const body = document.getElementById('data-body');
 
+    // 🔹 Если поле пустое — просто подгружаем все записи
+    if (q === "") {
+        fetch("{% url 'photometadata:db_view_ajax' %}") // создаем отдельный endpoint для "все данные"
+        .then(r => r.json())
+        .then(data => {
+            body.innerHTML = "";
+            for (const item of data.results) {
+                const row = `
+                    <tr data-id="${item.id}">
+                        <td>${item.title}</td>
+                        <td>${item.photographer}</td>
+                        <td>${item.date_taken}</td>
+                        <td>${item.description}</td>
+                        <td>${item.location}</td>
+                        <td>${item.camera}</td>
+                        <td>${item.license}</td>
+                        <td>${item.width}</td>
+                        <td>${item.height}</td>
+                        <td>${item.tags}</td>
+                        <td><a href="${item.url}" target="_blank"><img src="${item.url}" style="max-width:100px;border-radius:6px;"></a></td>
+                        <td>
+                            <button class="btn btn-sm btn-warning edit-btn" data-id="${item.id}">Ред.</button>
+                            <button class="btn btn-sm btn-danger delete-btn" data-id="${item.id}">Удал.</button>
+                        </td>
+                    </tr>`;
+                body.insertAdjacentHTML('beforeend', row);
+            }
+        });
+        return;
+    }
+
+    // 🔹 Иначе — обычный поиск
+    fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json", "X-CSRFToken": csrftoken},
+        body: JSON.stringify({ q })
+    })
+    .then(r => r.json())
+    .then(data => {
+        body.innerHTML = "";
+        for (const item of data.results) {
+            const row = `
+                <tr data-id="${item.id}">
+                    <td>${item.title}</td>
+                    <td>${item.photographer}</td>
+                    <td>${item.date_taken}</td>
+                    <td>${item.description}</td>
+                    <td>${item.location}</td>
+                    <td>${item.camera}</td>
+                    <td>${item.license}</td>
+                    <td>${item.width}</td>
+                    <td>${item.height}</td>
+                    <td>${item.tags}</td>
+                    <td><a href="${item.url}" target="_blank"><img src="${item.url}" style="max-width:100px;border-radius:6px;"></a></td>
+                    <td>
+                        <button class="btn btn-sm btn-warning edit-btn" data-id="${item.id}">Ред.</button>
+                        <button class="btn btn-sm btn-danger delete-btn" data-id="${item.id}">Удал.</button>
+                    </td>
+                </tr>`;
+            body.insertAdjacentHTML('beforeend', row);
+        }
+    });
 });
 
 // ======= AJAX УДАЛЕНИЕ =======
