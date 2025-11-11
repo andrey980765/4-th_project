@@ -16,7 +16,7 @@
 ##  Установка
 
 1. Клонировать репозиторий:
-    git clone https://github.com/username/photometadata.git
+    git clone https://github.com/andrey980765/4-th_project.git
     cd photometadata
 2. Создать виртуальное окружение:
     python -m venv venv
